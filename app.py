@@ -359,21 +359,12 @@ def create_collection():
     form = CollectionCreateForm()
     gifs = Gif.query.all()
     choices = [(str(g.id), g.title) for g in gifs]
-    print('------------------')
-    print(choices)
     form.gif_picks.choices = choices
     if form.validate_on_submit():
-        print("******************")
         collection_name = form.name.data
-        print(collection_name)
         gifs_selected = form.gif_picks.data
-        print(gifs_selected)
         gif_objects = [get_gif_by_id(int(id)) for id in gifs_selected]
-        print("++++++++++++++++++++")
-        print(gif_objects[0:3])
         collection_objects = get_or_create_collection(current_user=current_user, name=collection_name, gif_list=gif_objects)
-        print("^^^^^^^^^^^^^^^^^^^^")
-        print(collection_objects)
         return redirect(url_for('collections'))
     
     return render_template('create_collection.html', form=form)
